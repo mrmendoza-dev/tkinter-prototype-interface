@@ -8,6 +8,9 @@ import sys
 import os
 from os import listdir
 from os.path import isfile, join
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 #Change output to save to a variable instead of printing to screen
 #Changes output method and switches back after assigning
@@ -40,7 +43,7 @@ def create_root():
     root = Tk()
     title_text = "TK Sesh"
     root.title(title_text)
-    center_window(root, 1200, 1000)
+    center_window(root, 1500, 1000)
 
     #Change window icon
     p1 = PhotoImage(file='bitcoin.png')
@@ -64,10 +67,13 @@ def homepage(root):
     generic_pady = 10
 
 
-
     #SIMPLE TEXT
     header_text = "TKinter Test Interface"
     header = Label(root, text=header_text).grid(row=0, column=0)
+
+
+
+
 
     #FRAMES
     #Main dashboard, 5 rows x 2 columns
@@ -76,14 +82,28 @@ def homepage(root):
     #Positioning inside frame is independent from root
 
 
+
+
+
+
+
+
     #APPS SECTION
     apps_frame = LabelFrame(dashboard, text='Apps', padx=generic_padx, pady=generic_pady)
     apps_frame.grid(row=0, column=0)
 
-    calculator_button = Button(apps_frame, text='Calculator', command=calculator_app).grid(row=0)
-    image_viewer_app_button = Button(apps_frame, text='Image Viewer', command=image_viewer_app).grid(row=1)
-    database_button = Button(apps_frame, text='Database', command=database_app).grid(row=2)
-    weather_app_button = Button(apps_frame, text='Weather', command=weather_app).grid(row=3)
+    app_padx = 30
+    app_pady = 10
+
+    Button(apps_frame, text='Calculator', command=calculator_app, padx=app_padx, pady=app_pady).grid()
+    Button(apps_frame, text='Image Viewer', command=image_viewer_app, padx=app_padx, pady=app_pady).grid()
+    Button(apps_frame, text='Database', command=database_app, padx=app_padx, pady=app_pady).grid()
+    Button(apps_frame, text='Weather', command=weather_app, padx=app_padx, pady=app_pady).grid()
+    Button(apps_frame, text='Plotting App', command=plotting_app, padx=app_padx, pady=app_pady).grid()
+
+
+
+
 
 
 
@@ -106,35 +126,45 @@ def homepage(root):
     Button(input_frame, text="Click Here!", command=lambda: myClick(current)).grid(row=3)
 
 
+
+
+
+
+
     #RADIOS
-    radio_frame = LabelFrame(dashboard, text='Input Field', padx=generic_padx, pady=generic_pady)
+    radio_frame = LabelFrame(dashboard, text='Radio Buttons', padx=generic_padx, pady=generic_pady)
     radio_frame.grid(row=0, column=2)
 
-    MODES = [
+    radios = [
         ("Option 1", 1),
         ("Option 2", 2),
         ("Option 3", 3),
         ("Option 4", 4),
         ("Option 5", 5),
     ]
+    radio_val = IntVar()
+    radio_val.set(0)
 
-    def clicked_radio(value):
-        Label(radio_frame, text=value).grid(row=len(MODES)+1)
+    def clicked_radio(val):
+        Label(radio_frame, text=val).grid(row=len(radios)+1)
 
-    mode = IntVar()
-    mode.set(0)
 
-    for text, value in MODES:
-        Radiobutton(radio_frame, text=text, variable=mode, value=value).grid(column=0)
+    for text, value in radios:
+        radio = Radiobutton(radio_frame, text=text, variable=radio_val, value=value)
+        radio.grid(column=0)
 
-    Button(radio_frame, text="Select", command=lambda: clicked_radio(mode.get())).grid(column=0)
+    Button(radio_frame, text="Select", command=lambda: clicked_radio(radio_val.get())).grid(column=0)
+
+
+
+
+
 
 
 
     #SCROLL BAR
     scroll_frame = LabelFrame(dashboard, text='Output Console', padx=generic_padx, pady=generic_pady)
     scroll_frame.grid(row=0, column=3)
-
 
     text_area = st.ScrolledText(scroll_frame, width=30, height=8, font=("Times New Roman", 15))
     text_area.grid(row=0, column=6, rowspan=10, pady=10, padx=10)
@@ -184,11 +214,8 @@ def homepage(root):
     def info_popup():
         messagebox.showinfo('Info', 'Testing...')
 
-
-
     def error_popup():
         messagebox.showerror('Error', 'Virus Detected')
-
 
     def ask_popup():
         response = messagebox.askquestion('Continue', 'Continue shutting down computer?')
@@ -200,6 +227,9 @@ def homepage(root):
     Button(button_frame, text='INFO', command=info_popup).grid(row=10, column=0)
     Button(button_frame, text='ERROR', command=error_popup).grid(row=10, column=1)
     Button(button_frame, text='?', command=ask_popup).grid(row=10, column=2)
+
+
+
 
 
 
@@ -239,13 +269,91 @@ def homepage(root):
     vertical.grid(row=1, column=1)
 
 
+
+
+
+
+
+
+
+
     #CHECKBOXES FRAME
     checkbox_frame = LabelFrame(dashboard, text='Checkbox', padx=generic_padx, pady=generic_pady)
     checkbox_frame.grid(row=1, column=2)
 
+    checkboxes = [
+        ("Option 1", 1),
+        ("Option 2", 2),
+        ("Option 3", 3),
+        ("Option 4", 4),
+        ("Option 5", 5),
+    ]
+
+    mode = IntVar()
+    mode.set(0)
+
+    selected_checks = []
+
+    def select_option(var):
+        if var in selected_checks:
+            selected_checks.remove(var)
+        else:
+            selected_checks.append(var)
+
+    def display_options():
+        for item in selected_checks:
+            Label(checkbox_frame, text=str(item)).grid(column=0)
+
+
+    check_var = IntVar()
+
+    for text, value in checkboxes:
+
+        checkbox = Checkbutton(checkbox_frame, text=text, variable=value, command=lambda: select_option(value), onvalue=1, offvalue=0)
+        checkbox.grid(column=0)
+
+        checkbox.deselect()
+
+    Button(checkbox_frame, text='Show Selection', command=display_options).grid(row=len(checkboxes)+1)
+
+
+
+
+
+
+
+
     #DROPDOWN FRAME
     dropdown_frame = LabelFrame(dashboard, text='Dropdown', padx=generic_padx, pady=generic_pady)
     dropdown_frame.grid(row=1, column=3)
+
+    options = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday'
+    ]
+
+    clicked = StringVar()
+    clicked.set(options[0])
+
+    def show_dropdown():
+        Label(dropdown_frame, text=clicked.get()).grid(row=3)
+
+    Label(dropdown_frame, text='Select a Day').grid(row=0)
+    drop = OptionMenu(dropdown_frame, clicked, *options)
+    drop.grid(row=1)
+
+    Button(dropdown_frame, text='Show Selection', command=show_dropdown).grid(row=2)
+
+
+
+
+
+
 
 
 
@@ -356,7 +464,6 @@ def calculator_app():
     button_divide.grid(row=6, column=2)
 
 
-
 def image_viewer_app():
     global image_label
     top = Toplevel()
@@ -444,6 +551,22 @@ def weather_app():
     top = Toplevel()
     top.title('Weather')
     center_window(top, 300, 300)
+
+
+
+def plotting_app():
+    top = Toplevel()
+    top.title('Data Analysis')
+    center_window(top, 300, 300)
+
+    def graph():
+        house_prices = np.random.normal(200000, 25000, 5000)
+        plt.hist(house_prices, 200)
+        plt.show()
+
+    Button(top, text="Plot Graph", command=graph).grid(row=5)
+
+
 
 def main():
     root = create_root()
