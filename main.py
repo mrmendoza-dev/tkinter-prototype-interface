@@ -93,21 +93,23 @@ def homepage(root):
 
 
 
+    module_bg = 'slategray2'
+    module_button_bg = 'skyblue'
 
 
     #APPS SECTION
-    apps_frame = LabelFrame(dashboard, text='Apps', padx=generic_padx, pady=generic_pady)
+    apps_frame = LabelFrame(dashboard, text='Apps', padx=generic_padx, pady=generic_pady, bg=module_bg)
     apps_frame.grid(row=1, column=1)
-    apps_frame.configure(bg='slategray2')
+
 
     app_padx = 30
     app_pady = 10
 
-    Button(apps_frame, text='Calculator', command=calculator_app, padx=app_padx, pady=app_pady).grid()
-    Button(apps_frame, text='Image Viewer', command=image_viewer_app, padx=app_padx, pady=app_pady).grid()
-    Button(apps_frame, text='Database', command=database_app, padx=app_padx, pady=app_pady).grid()
-    Button(apps_frame, text='Weather', command=weather_app, padx=app_padx, pady=app_pady).grid()
-    Button(apps_frame, text='Plotting App', command=plotting_app, padx=app_padx, pady=app_pady).grid()
+    Button(apps_frame, text='Calculator', command=calculator_app, padx=app_padx, pady=app_pady, bg=module_button_bg).grid()
+    Button(apps_frame, text='Image Viewer', command=image_viewer_app, padx=app_padx, pady=app_pady, bg=module_button_bg).grid()
+    Button(apps_frame, text='Database', command=database_app, padx=app_padx, pady=app_pady, bg=module_button_bg).grid()
+    Button(apps_frame, text='Weather', command=weather_app, padx=app_padx, pady=app_pady, bg=module_button_bg).grid()
+    Button(apps_frame, text='Plotting App', command=plotting_app, padx=app_padx, pady=app_pady, bg=module_button_bg).grid()
 
 
 
@@ -116,21 +118,21 @@ def homepage(root):
 
 
     #INPUT
-    input_frame = LabelFrame(dashboard, text='Input Field', padx=generic_padx, pady=generic_pady, bg='slategray2')
+    input_frame = LabelFrame(dashboard, text='Input Field', padx=generic_padx, pady=generic_pady, bg=module_bg)
     input_frame.grid(row=1, column=2)
 
-    Label(input_frame, text="Enter Text:").grid(row=0)
+    Label(input_frame, text="Enter Text:", bg=module_bg).grid(row=0)
     entry = Entry(input_frame, width=50)
     entry.grid(row=1, columnspan=2)
 
     #entry.insert(1, "Enter a cryptocurrency...") #Placeholder text
     input_text = entry.get()
-    Label(input_frame, text='').grid(row=4)
+    Label(input_frame, text='', bg=module_bg).grid(row=4)
 
     def display_input():
-        Label(input_frame, text=entry.get()).grid(row=4)
+        Label(input_frame, text=entry.get(), bg=module_bg).grid(row=4)
 
-    Button(input_frame, text="Click Here!", command=display_input).grid(row=3)
+    Button(input_frame, text="Click Here!", command=display_input, bg=module_button_bg).grid(row=3)
 
 
 
@@ -139,9 +141,8 @@ def homepage(root):
 
 
     #RADIOS
-    radio_frame = LabelFrame(dashboard, text='Radio Buttons', padx=generic_padx, pady=generic_pady)
+    radio_frame = LabelFrame(dashboard, text='Radio Buttons', padx=generic_padx, pady=generic_pady, bg=module_bg)
     radio_frame.grid(row=2, column=1)
-    radio_frame.configure(bg='slategray2')
 
     radios = [
         ("Option 1", 1),
@@ -154,14 +155,14 @@ def homepage(root):
     radio_val.set(0)
 
     def clicked_radio(val):
-        Label(radio_frame, text=val).grid(row=len(radios)+1)
+        Label(radio_frame, text=val, bg=module_bg).grid(row=len(radios)+1)
 
 
     for text, value in radios:
-        radio = Radiobutton(radio_frame, text=text, variable=radio_val, value=value)
+        radio = Radiobutton(radio_frame, text=text, variable=radio_val, value=value, bg=module_bg)
         radio.grid(column=0)
 
-    Button(radio_frame, text="Select", command=lambda: clicked_radio(radio_val.get())).grid(column=0)
+    Button(radio_frame, text="Select", command=lambda: clicked_radio(radio_val.get()), bg=module_button_bg).grid(column=0)
 
 
 
@@ -171,9 +172,8 @@ def homepage(root):
 
 
     #SCROLL BAR
-    scroll_frame = LabelFrame(dashboard, text='Output Console', padx=generic_padx, pady=generic_pady)
+    scroll_frame = LabelFrame(dashboard, text='Output Console', padx=generic_padx, pady=generic_pady, bg=module_bg)
     scroll_frame.grid(row=3, column=2)
-    scroll_frame.configure(bg='slategray2')
 
     text_area = st.ScrolledText(scroll_frame, width=30, height=8, font=("Times New Roman", 15))
     text_area.grid(row=0, column=6, rowspan=10, pady=10, padx=10)
@@ -197,9 +197,8 @@ def homepage(root):
 
 
     #BUTTON FRAME
-    button_frame = LabelFrame(dashboard, text='Button Depot', padx=generic_padx, pady=generic_pady)
+    button_frame = LabelFrame(dashboard, text='Button Depot', padx=generic_padx, pady=generic_pady, bg=module_bg)
     button_frame.grid(row=2, column=2)
-    button_frame.configure(bg='slategray2')
 
     #Exit Button
     Button(button_frame, text='Quit', command=root.quit, bg='yellow').grid(row=0, column=1)
@@ -217,7 +216,7 @@ def homepage(root):
     Button(button_frame, text='9', padx=button_padx, pady=button_pady, bg='red3').grid(row=3, column=2)
 
     #Broken Button
-    Button(button_frame, text="Broken", state=DISABLED).grid(row=0, column=2)
+    Button(button_frame, text="Broken", state=DISABLED, bg=module_button_bg).grid(row=0, column=2)
 
     #MESSAGE BOXES
     # showinfo, showwarning, showerror, askquestion, askokcancel, askyesno
@@ -248,37 +247,35 @@ def homepage(root):
 
     #FILE SEARCH FRAME
     #Will only return locatiom of file (c:\\ etc.)
-    file_frame = LabelFrame(dashboard, text='File Search', padx=generic_padx, pady=generic_pady)
+    file_frame = LabelFrame(dashboard, text='File Search', padx=generic_padx, pady=generic_pady, bg=module_bg)
     file_frame.grid(row=1, column=3)
-    file_frame.configure(bg='slategray2')
 
     def open_explorer():
         root.filename = filedialog.askopenfilename(initialdir="/", title="Select A File", filetypes=(('png files', '*.png'), ('all files', '*.*')))
-        upload_label = Label(file_frame, text=root.filename).grid(row=2, column=0)
-    Label(file_frame, text='Search for Files').grid(row=0, column=0)
-    Button(file_frame, text='Browse', command=open_explorer).grid(row=1, column=0)
+        upload_label = Label(file_frame, text=root.filename, bg=module_bg).grid(row=2, column=0)
+    Label(file_frame, text='Search for Files', bg=module_bg).grid(row=0, column=0)
+    Button(file_frame, text='Browse', command=open_explorer, bg=module_button_bg).grid(row=1, column=0)
 
 
 
 
     #SLIDER FRAME
-    slider_frame = LabelFrame(dashboard, text='Sliders', padx=generic_padx, pady=generic_pady)
+    slider_frame = LabelFrame(dashboard, text='Sliders', padx=generic_padx, pady=generic_pady, bg=module_bg)
     slider_frame.grid(row=3, column=1)
-    slider_frame.configure(bg='slategray2')
 
     vh_sum = 0
-    Label(slider_frame, text="X + Y = " + str(vh_sum)).grid(row=3, column=3)
+    Label(slider_frame, text="X + Y = " + str(vh_sum), bg=module_bg).grid(row=3, column=3)
 
     def slide(var):
         vh_sum = vertical.get() + horizontal.get()
-        Label(slider_frame, text="X + Y = " + str(vh_sum)).grid(row=3, column=3)
+        Label(slider_frame, text="X + Y = " + str(vh_sum), bg=module_bg).grid(row=3, column=3)
 
-    horizontal = Scale(slider_frame, from_=0, to=1000, orient=HORIZONTAL, command=slide)
-    Label(slider_frame, text="X-Slider").grid(row=0, column=0)
+    horizontal = Scale(slider_frame, from_=0, to=1000, orient=HORIZONTAL, command=slide, bg=module_bg)
+    Label(slider_frame, text="X-Slider", bg=module_bg).grid(row=0, column=0)
     horizontal.grid(row=1, column=0)
 
-    vertical = Scale(slider_frame, from_=0, to=1000, command=slide)
-    Label(slider_frame, text="Y-Slider").grid(row=0, column=1)
+    vertical = Scale(slider_frame, from_=0, to=1000, command=slide, bg=module_bg)
+    Label(slider_frame, text="Y-Slider", bg=module_bg).grid(row=0, column=1)
     vertical.grid(row=1, column=1)
 
 
@@ -291,9 +288,8 @@ def homepage(root):
 
 
     #CHECKBOXES FRAME
-    checkbox_frame = LabelFrame(dashboard, text='Checkbox', padx=generic_padx, pady=generic_pady)
+    checkbox_frame = LabelFrame(dashboard, text='Checkbox', padx=generic_padx, pady=generic_pady, bg=module_bg)
     checkbox_frame.grid(row=2, column=3)
-    checkbox_frame.configure(bg='slategray2')
 
     checkboxes = [
         ('Python', 'Python'),
@@ -319,21 +315,21 @@ def homepage(root):
         for item in selected_checks:
             print(item)
             print(selected_checks)
-            Label(checkbox_frame, text=str(item)).grid(column=0)
+            Label(checkbox_frame, text=str(item), bg=module_bg).grid(column=0)
 
 
     check_var = StringVar()
 
     for text, value in checkboxes:
         print(value)
-        checkbox = Checkbutton(checkbox_frame, text=text, variable=value, command=lambda: select_option(value), onvalue=value, offvalue='')
+        checkbox = Checkbutton(checkbox_frame, text=text, variable=value, command=lambda: select_option(value), onvalue=value, offvalue='', bg=module_bg)
         #checkbox = Checkbutton(checkbox_frame, text=text, variable=value, command=lambda: select_option(value), onvalue=1, offvalue=0)
 
         checkbox.grid(column=0)
 
         #checkbox.deselect()
 
-    Button(checkbox_frame, text='Show Selection', command=display_options).grid(row=len(checkboxes)+1)
+    Button(checkbox_frame, text='Show Selection', command=display_options, bg=module_button_bg).grid(row=len(checkboxes)+1)
 
 
 
@@ -343,9 +339,8 @@ def homepage(root):
 
 
     #DROPDOWN FRAME
-    dropdown_frame = LabelFrame(dashboard, text='Dropdown', padx=generic_padx, pady=generic_pady)
+    dropdown_frame = LabelFrame(dashboard, text='Dropdown', padx=generic_padx, pady=generic_pady, bg=module_bg)
     dropdown_frame.grid(row=3, column=3)
-    dropdown_frame.configure(bg='slategray2')
 
     options = [
         'Monday',
@@ -361,13 +356,13 @@ def homepage(root):
     clicked.set(options[0])
 
     def show_dropdown():
-        Label(dropdown_frame, text=clicked.get()).grid(row=3)
+        Label(dropdown_frame, text=clicked.get(), bg=module_bg).grid(row=3)
 
-    Label(dropdown_frame, text='Select a Day').grid(row=0)
+    Label(dropdown_frame, text='Select a Day', bg=module_bg).grid(row=0)
     drop = OptionMenu(dropdown_frame, clicked, *options)
     drop.grid(row=1)
 
-    Button(dropdown_frame, text='Show Selection', command=show_dropdown).grid(row=2)
+    Button(dropdown_frame, text='Show Selection', command=show_dropdown, bg=module_button_bg).grid(row=2)
 
 
 
