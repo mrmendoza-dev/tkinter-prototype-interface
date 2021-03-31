@@ -51,7 +51,7 @@ def create_root():
     center_window(root, 800, 1000)
 
     #Change window icon
-    p1 = PhotoImage(file='bitcoin.png')
+    p1 = PhotoImage(file='files/bitcoin.png')
     root.iconphoto(False, p1)
     return root
 
@@ -809,7 +809,7 @@ def plotting_app():
 def audio_buttons():
     pygame.mixer.init()
 
-    pygame.mixer.music.load('audio.mp3')
+    pygame.mixer.music.load('files/audio.mp3')
     pygame.mixer.music.play(loops=0)
 
 
