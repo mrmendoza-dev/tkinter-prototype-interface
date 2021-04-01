@@ -1,32 +1,12 @@
-from tkinter import *
-from PIL import ImageTk, Image
-from operator import itemgetter
+from libraries import *
+from calculator import *
+from image_viewer import *
+from database_app import *
+from plotting_app import *
 
-import tkinter.scrolledtext as st
-from tkinter import messagebox, filedialog
+from libraries import *
 
-import io, sys, os
-from os import listdir
-from os.path import isfile, join
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-import pygame
-
-import sqlite3
 db_name = 'address_book.db'
-#Change output to save to a variable instead of printing to screen
-#Changes output method and switches back after assigning
-def save_output():
-    old_stdout = sys.stdout
-    new_stdout = io.StringIO()
-    sys.stdout = new_stdout
-
-
-    output = new_stdout.getvalue()
-    sys.stdout = old_stdout
-    return output
 
 
 #Declare window size when called, use parameters of window and screen size to determine centerpoint
@@ -48,7 +28,7 @@ def create_root():
     title_text = "TK Sesh"
     root.title(title_text)
     root.configure(bg='slategray4')
-    center_window(root, 800, 1000)
+    center_window(root, 1000, 1000)
 
     #Change window icon
     p1 = PhotoImage(file='files/bitcoin.png')
@@ -335,11 +315,71 @@ def homepage(root):
 
 
 
+    #LIST BOXES
+    #Create initial module frame for list boxes
+    listbox_frame = LabelFrame(dashboard, text='List Boxes', padx=generic_padx, pady=generic_pady, bg=module_bg)
+    listbox_frame.grid(row=3, column=4)
+
+    #Frame within list box module
+    listbox_subframe = Frame(listbox_frame)
+    listbox_subframe.grid(row=1)
+
+    listbox_scrollbar = Scrollbar(listbox_subframe, orient=VERTICAL)
+
+    test_listbox = Listbox(listbox_subframe, width=10, yscrollcommand=listbox_scrollbar.set, selectmode=EXTENDED)
+    test_listbox.grid(row=0, column=0)
+
+    listbox_scrollbar.config(command=test_listbox.yview)
+    listbox_scrollbar.grid(row=0, column=1, sticky=NS)
+
+
+
+    cryptos = ['BTC', 'ETH', 'ADA', 'BNB', 'DOT', 'LINK', 'XRP', 'ETH', 'ADA', 'BNB', 'DOT', 'LINK', 'XRP']
+    for item in cryptos:
+        test_listbox.insert(END, item)
+
+    def select_listbox():
+        listbox_label.config(text=test_listbox.get(ANCHOR))
+
+    def select_all_listbox():
+        result = ''
+        for item in test_listbox.curselection():
+            result = result + str(test_listbox.get(item)) + '\n'
+        listbox_label.config(text=result)
+
+    def delete_listbox():
+        #Highlighted object is ANCHOR
+        test_listbox.delete(ANCHOR)
+        listbox_label.config(text='')
+
+    def delete_all_listbox():
+        test_listbox.delete(0, END)
+        listbox_label.config(text='')
+
+    def delete_multiple_listbox():
+        for item in reversed(test_listbox.curselection()):
+            test_listbox.delete(item)
+
+
+
+    Button(listbox_frame, text='Select', command=select_listbox, bg=module_button_bg).grid(row=2)
+    Button(listbox_frame, text='Select All', command=select_all_listbox, bg=module_button_bg).grid(row=3)
+
+    Button(listbox_frame, text='Delete', command=delete_listbox, bg=module_button_bg).grid(row=4)
+    Button(listbox_frame, text='Delete All', command=delete_all_listbox, bg=module_button_bg).grid(row=5)
+    Button(listbox_frame, text='Delete Multiple', command=delete_multiple_listbox, bg=module_button_bg).grid(row=6)
+
+    listbox_label = Label(listbox_frame, text='', bg=module_bg)
+    listbox_label.grid(row=10)
+
+
+
+
 
 
 
     #DROPDOWN FRAME
-    dropdown_frame = LabelFrame(dashboard, text='Dropdown', padx=generic_padx, pady=generic_pady, bg=module_bg)
+    dropdown_frame = LabelFrame(dashboard, text='List Boxes', padx=generic_padx, pady=generic_pady, bg=module_bg)
     dropdown_frame.grid(row=3, column=3)
 
     options = [
@@ -366,8 +406,19 @@ def homepage(root):
 
 
 
+    #SPINBOX FRAME
+    spinbox_frame = LabelFrame(dashboard, text='Spinboxes', padx=generic_padx, pady=generic_pady, bg=module_bg)
+    spinbox_frame.grid(row=2, column=4)
 
+    test_spinbox = Spinbox(spinbox_frame, from_=0, to=10, increment=1, font=('Helvetica', 12))
+    test_spinbox.grid(row=1)
 
+    def grab():
+        spinbox_label.config(text='Selected Option: ' + test_spinbox.get())
+
+    Button(spinbox_frame, text='Submit', command=grab).grid(row=2)
+    spinbox_label = Label(spinbox_frame, text='', bg=module_bg)
+    spinbox_label.grid(row=3)
 
 
 
