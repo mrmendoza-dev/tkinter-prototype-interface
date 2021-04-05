@@ -28,7 +28,7 @@ def create_root():
     title_text = "TK Sesh"
     root.title(title_text)
     root.configure(bg='slategray4')
-    center_window(root, 1000, 1000)
+    center_window(root, 1500, 1000)
 
     #Change window icon
     p1 = PhotoImage(file='files/bitcoin.png')
@@ -65,10 +65,6 @@ def homepage(root):
     dashboard = LabelFrame(root, text='Dashboard', padx=30, pady=20)
     dashboard.grid(row=1, column=0)
     dashboard.configure(bg='slategray3')
-
-    #Positioning inside frame is independent from root
-
-
 
 
 
@@ -233,6 +229,7 @@ def homepage(root):
     def open_explorer():
         root.filename = filedialog.askopenfilename(initialdir="/", title="Select A File", filetypes=(('png files', '*.png'), ('all files', '*.*')))
         upload_label = Label(file_frame, text=root.filename, bg=module_bg).grid(row=2, column=0)
+
     Label(file_frame, text='Search for Files', bg=module_bg).grid(row=0, column=0)
     Button(file_frame, text='Browse', command=open_explorer, bg=module_button_bg).grid(row=1, column=0)
 
@@ -420,6 +417,200 @@ def homepage(root):
     spinbox_label = Label(spinbox_frame, text='', bg=module_bg)
     spinbox_label.grid(row=3)
 
+
+
+    #TREEVIEW FRAME
+    treeview_frame = LabelFrame(dashboard, text='Treeview', padx=generic_padx, pady=generic_pady, bg=module_bg)
+    treeview_frame.grid(row=1, column=5)
+
+    treeview_subframe = Frame(treeview_frame)
+    treeview_subframe.grid(row=0, column=0, pady=20)
+
+    tree_scroll = Scrollbar(treeview_subframe, orient=VERTICAL)
+    tree_scroll.grid(row=0, column=1, sticky=NS)
+
+    tree_style = ttk.Style()
+    tree_style.theme_use('alt')
+    tree_style.configure('Treeview',
+                         background='silver',
+                         foreground='black',
+                         rowheight=25,
+                         fieldbackground='silver'
+                         )
+    tree_style.map('Treeview',
+                   background=[('selected', 'blue')])
+
+    tree = ttk.Treeview(treeview_subframe, yscrollcommand=tree_scroll.set)
+    tree.grid(row=0, column=0)
+
+    tree_scroll.config(command=tree.yview)
+
+
+    tree['columns'] = ('Name', 'ID')
+
+    tree.column('#0', width=0, stretch=NO)
+    tree.column('Name', anchor=W, width=120)
+    tree.column('ID', anchor=CENTER, width=40)
+
+    tree.heading('Name', text='Name', anchor=W)
+    tree.heading('ID', text='ID', anchor=CENTER)
+
+    tree_data = [
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+        ['Alice', 3],
+        ['John', 1],
+        ['Bob', 2],
+    ]
+
+    tree.tag_configure('oddrow', background='white')
+    tree.tag_configure('evenrow', background='lightblue')
+
+
+    count = 0
+    for item in tree_data:
+        if count % 2 == 0:
+            tree.insert(parent='', index='end', iid=count, text='', values=(item[0], item[1]), tags=('evenrow'))
+        else:
+            tree.insert(parent='', index='end', iid=count, text='', values=(item[0], item[1]), tags=('oddrow'))
+        count += 1
+
+    tree_entry_frame = Frame(treeview_subframe)
+    tree_entry_frame.grid(row=2, column=0)
+
+    name_label = Label(tree_entry_frame, text='Name')
+    name_label.grid(row=0, column=0)
+
+    id_label = Label(tree_entry_frame, text='ID')
+    id_label.grid(row=0, column=1)
+
+    name_entry = Entry(tree_entry_frame)
+    name_entry.grid(row=1, column=0)
+
+    id_entry = Entry(tree_entry_frame)
+    id_entry.grid(row=1, column=1)
+
+    def select_record():
+        name_entry.delete(0, END)
+        id_entry.delete(0, END)
+
+        selected = tree.focus()
+        values = tree.item(selected, 'values')
+
+        name_entry.insert(0, values[0])
+        id_entry.insert(0, values[1])
+
+    #Need to pass event variable in
+    def clicker(e):
+        select_record()
+
+    #Binding
+    #tree.bind('<Double-1>', clicker)
+    tree.bind('<ButtonRelease>', clicker)
+
+
+    #SEARCH FRAME
+    search_frame = LabelFrame(dashboard, text='Search', padx=generic_padx, pady=generic_pady, bg=module_bg)
+    search_frame.grid(row=2, column=5)
+
+    def update(data):
+        search_list.delete(0, END)
+        for item in data:
+            search_list.insert(END, item)
+
+    def fillout(e):
+        search_entry.delete(0, END)
+        search_entry.insert(0, search_list.get(ANCHOR))
+
+    def check(e):
+        typed = search_entry.get()
+        if typed == '':
+            data = toppings
+        else:
+            data = []
+            for item in toppings:
+                if typed.lower() in item.lower():
+                    data.append(item)
+        update(data)
+
+    search_entry = Entry(search_frame, font=('Arial', 12))
+    search_entry.grid(row=0)
+
+
+
+
+
+
+
+    search_list = Listbox(search_frame, width=50)
+    search_list.grid(row=1)
+
+    toppings = ['Pepperoni', 'Sausage', 'Ham', 'Cheese', 'Pineapple', 'Beef', 'Onion', 'Olives', 'Bell Pepper', 'Chicken']
+    update(toppings)
+    search_list.bind("<<ListboxSelect>>", fillout)
+    search_entry.bind("<KeyRelease>", check)
 
 
 
