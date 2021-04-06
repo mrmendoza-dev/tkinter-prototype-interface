@@ -8,6 +8,28 @@ from libraries import *
 
 db_name = 'address_book.db'
 
+def create_menu(root):
+    def our_command():
+        pass
+
+    menu = Menu(root)
+    root.config(menu=menu)
+
+    file_menu = Menu(menu)
+    menu.add_cascade(label='File', menu=file_menu)
+    file_menu.add_command(label='New...', command=our_command)
+    file_menu.add_separator()
+    file_menu.add_command(label='Exit', command=root.quit)
+
+    edit_menu = Menu(menu)
+    menu.add_cascade(label='Edit', menu=edit_menu)
+    edit_menu.add_command(label='Cut', command=our_command)
+    edit_menu.add_command(label='Copy', command=our_command)
+
+    option_menu = Menu(menu)
+    menu.add_cascade(label='Options', menu=option_menu)
+    option_menu.add_command(label='Find', command=our_command)
+    option_menu.add_command(label='Find Next', command=our_command)
 
 #Declare window size when called, use parameters of window and screen size to determine centerpoint
 def center_window(window, width, height):
@@ -598,12 +620,6 @@ def homepage(root):
     search_entry = Entry(search_frame, font=('Arial', 12))
     search_entry.grid(row=0)
 
-
-
-
-
-
-
     search_list = Listbox(search_frame, width=50)
     search_list.grid(row=1)
 
@@ -1054,6 +1070,7 @@ def audio_buttons():
 
 def main():
     root = create_root()
+    create_menu(root)
     #sidebar = create_sidebar()
 
 
